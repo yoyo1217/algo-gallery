@@ -1,5 +1,6 @@
 "use client";
 
+import Editor from "@/components/editor";
 import { knapsack } from "@/utils/knapsack";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -214,6 +215,9 @@ const Knapsack = () => {
       ) : (
         <div className="text-lg font-bold">not found</div>
       )}
+      <div className="py-4">
+        <Editor />
+      </div>
     </div>
   );
 };
