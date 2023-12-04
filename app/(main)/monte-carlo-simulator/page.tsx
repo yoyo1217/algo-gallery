@@ -69,7 +69,7 @@ const MonteCarloSimulator = () => {
 
   return (
     <div className="h-full flex flex-col items-center justify-center space-y-4">
-      <h1 className="text-2xl p-6">Monte Carlo Simulator</h1>
+      <h1 className="text-2xl font-bold p-6">Monte Carlo Simulator</h1>
       <canvas ref={canvasRef} width="400" height="400"></canvas>
       <input
         className="rounded-md border-2 border-sky-500 bg-grey-100 border-solid"

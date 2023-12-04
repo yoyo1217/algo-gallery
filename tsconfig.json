@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/dp"
+    "app/(main)/knapsack"
   ],
   "exclude": ["node_modules"]
 }
