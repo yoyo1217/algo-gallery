@@ -9,12 +9,15 @@ const extensions = [javascript({ jsx: true })];
 
 const Editor = () => {
   return (
-    <CodeMirror
-      value={knapsack}
-      theme={okaidia}
-      extensions={[javascript({ jsx: true })]}
-      readOnly={true}
-    />
+    <div className="w-full px-2">
+      <CodeMirror
+        value={knapsack}
+        theme={okaidia}
+        width="100%"
+        extensions={[javascript({ jsx: true })]}
+        readOnly={true}
+      />
+    </div>
   );
 };
 export default Editor;
