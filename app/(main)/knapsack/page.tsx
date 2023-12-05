@@ -1,9 +1,13 @@
 "use client";
 
-import Editor from "@/components/editor";
+import Editor from "@/components/Editor";
 import { knapsack } from "@/utils/knapsack";
 import classNames from "classnames";
 import React, { useState } from "react";
+import Table from "./_components/Table";
+import Input from "./_components/Input";
+import ValidationMessage from "./_components/ValidationMessage";
+import Button from "./_components/Button";
 
 const Knapsack = () => {
   const [weightLimit, setWeightLimit] = useState<number | "">(9);
@@ -14,8 +18,8 @@ const Knapsack = () => {
   const numOfItem = weights.length;
 
   const sum = weights.reduce((acc, curr) => acc + curr, 0);
-  const dp = knapsack(numOfItem, weightLimit as number, { weights, values });
-  const ans = dp[numOfItem][weightLimit as number];
+  const dp = knapsack(numOfItem, { weights, values });
+  const maximumWeight = dp[numOfItem][weightLimit as number];
 
   const addRow = () => {
     if (typeof weight === "number" && typeof value === "number") {
@@ -59,158 +63,100 @@ const Knapsack = () => {
     e.target.select();
   };
 
+  const itemTableHeaders = ["Weight", "Value"];
+  const create2DArray = () => {
+    return weights.map((weight, index) => {
+      const value = values[index];
+      return [weight, value];
+    });
+  };
+
+  const twoDimensionalArray = create2DArray();
+
+  const dpTableHeaders = [
+    "i/w",
+    ...Array.from({ length: sum + 1 }, (_, i) => i.toString()),
+  ];
+  const dpTableData = Array.from({ length: numOfItem + 1 }, (_, i) => [
+    i,
+    ...dp[i],
+  ]);
+
   return (
-    <div className="h-full flex flex-col items-center justify-center space-y-4">
+    <div className="h-full flex flex-col items-center justify-center space-y-4 m-3">
       <h2 className="text-xl font-bold pt-4">DP Table</h2>
-      <div className="flex items-center py-2 space-x-2">
-        <button
-          onClick={addRow}
-          className={classNames(
-            "p-2 bg-green-600 text-white rounded hover:bg-green-800",
-            {
+      <div className="flex flex-col space-y-3">
+        <div className="flex items-center py-2 space-x-2">
+          <Button
+            onClick={addRow}
+            className={classNames("bg-green-600 hover:bg-green-800", {
               "opacity-50 cursor-not-allowed":
                 !isValidNumber(weight) || !isValidNumber(value),
-            }
-          )}
-          disabled={!isValidNumber(weight) || !isValidNumber(value)}
-        >
-          Add Item
-        </button>
-        <div className="flex items-center space-x-2">
-          <label htmlFor="weight">
-            Weight
-            <input
+            })}
+            disabled={!isValidNumber(weight) || !isValidNumber(value)}
+            text="Add Item"
+          />
+          <div className="flex items-center space-x-2">
+            <label htmlFor="weight">Weight</label>
+            <Input
               id="weight"
-              className={`border ${
-                isValidNumber(weight)
-                  ? "outline-green-600 border-green-600"
-                  : "outline-red-600 border-red-600"
-              }`}
-              type="number"
-              max="9999"
+              outlineColor={isValidNumber(weight) ? "green-600" : "red-600"}
               value={weight}
               onChange={handleWeightChange}
+              maxValue={9999}
               onFocus={handleFocus}
             />
-          </label>
-          <label htmlFor="value">
-            Value
-            <input
+            <label htmlFor="value">Value</label>
+            <Input
               id="value"
-              className={`border ${
-                isValidNumber(value)
-                  ? "outline-green-600 border-green-600"
-                  : "outline-red-600 border-red-600"
-              }`}
-              type="number"
-              max="9999"
+              outlineColor={isValidNumber(value) ? "green-600" : "red-600"}
               value={value}
               onChange={handleValueChange}
+              maxValue={9999}
               onFocus={handleFocus}
             />
-          </label>
-          <p
-            className={`text-red-600 ${
-              !isValidNumber(weight) || !isValidNumber(value) ? "" : "invisible"
+            <ValidationMessage
+              isVisible={!isValidNumber(weight) || !isValidNumber(value)}
+              message="Number must be between 1 and 99."
+            />
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Button
+            onClick={removeRow}
+            className={`bg-red-600 hover:bg-red-800 ${
+              weights.length === 1 && "opacity-50 cursor-not-allowed"
             }`}
-          >
-            Number must be between 1 and 99.
-          </p>
+            disabled={weights.length === 1}
+            text="Remove Row"
+          />
+          <label htmlFor="weightLimit">Weight Limit</label>
+          <Input
+            id="weightLimit"
+            outlineColor={isValidNumber(weightLimit) ? "green-600" : "red-600"}
+            value={weightLimit}
+            onChange={handleWeightLimitChange}
+            maxValue={9999}
+            onFocus={handleFocus}
+          />
         </div>
       </div>
-      <div className="flex flex-row items-center justify-content space-x-4">
-        <label htmlFor="weightLimit">Weight Limit</label>
-        <input
-          id="weightLimit"
-          className="border border-green-600"
-          type="number"
-          value={weightLimit}
-          onChange={handleWeightLimitChange}
-          max="9999"
-          onFocus={handleFocus}
-        />
-        <button
-          onClick={removeRow}
-          className={`p-2 bg-red-600 text-white rounded hover:bg-green-800 ${
-            weights.length === 1 && "opacity-50 cursor-not-allowed"
-          }`}
-          disabled={weights.length === 1}
-        >
-          Remove Row
-        </button>
-      </div>
-      <div className="flex flex-row space-x-4">
-        <table className="table-auto border-collapse border border-green-800 shadow-lg">
-          <thead>
-            <tr>
-              <th className="border border-green-600 px-4 py-2 text-green-600">
-                Weight
-              </th>
-              <th className="border border-green-600 px-4 py-2 text-green-600">
-                Value
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {weights.map((item, index) => (
-              <tr key={index}>
-                <td className="border border-green-600 px-4 py-2">{item}</td>
-                <td className="border border-green-600 px-4 py-2">
-                  {values[index]}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
 
-        <table className="table-auto border-collapse border border-green-800 shadow-lg">
-          <thead>
-            <tr>
-              <th className="border border-green-600 px-4 py-2 text-green-600">
-                i / w
-              </th>
-              {Array.from({ length: sum + 1 }, (_, i) => i).map(
-                (item, index) => (
-                  <th
-                    key={index}
-                    className="border border-green-600 px-4 py-2 text-green-600"
-                  >
-                    {item}
-                  </th>
-                )
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: numOfItem + 1 }, (_, i) => i).map(
-              (item, index) => (
-                <tr key={index}>
-                  <td className="text-green-600 border border-green-600 px-4 py-2">
-                    {item}
-                  </td>
-                  {dp[item].map((_, i) =>
-                    dp[item][i] === ans && i === weightLimit ? (
-                      <td
-                        key={i}
-                        className="border text-red-600 border-green-600 px-4 py-2"
-                      >
-                        {dp[item][i]}
-                      </td>
-                    ) : (
-                      <td key={i} className="border border-green-600 px-4 py-2">
-                        {dp[item][i]}
-                      </td>
-                    )
-                  )}
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
+      <div className="flex flex-row max-w-[90%] space-x-4">
+        <div className="min-w-[20%] max-h-[30rem] overflow-y-auto">
+          <Table headers={itemTableHeaders} data={twoDimensionalArray} />
+        </div>
+        <div className="min-w-[20%] max-h-[30rem] overflow-auto">
+          <Table
+            headers={dpTableHeaders}
+            data={dpTableData}
+            highlightCell={{ row: numOfItem, column: weightLimit as number }}
+          />
+        </div>
       </div>
-      {ans !== undefined ? (
+      {maximumWeight !== undefined ? (
         <div className="text-lg font-bold">
-          Maximum value: {ans} at weight limit: {weightLimit}
+          Maximum value: {maximumWeight} at weight limit: {weightLimit}
         </div>
       ) : (
         <div className="text-lg font-bold">not found</div>
