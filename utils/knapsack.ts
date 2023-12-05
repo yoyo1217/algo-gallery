@@ -3,7 +3,7 @@ interface Item {
   values: number[];
 }
 
-export function knapsack(n: number, w: number, item: Item) {
+export function knapsack(n: number, item: Item) {
   const weightSum = item.weights.reduce((acc, curr) => acc + curr, 0);
   const dp: number[][] = Array.from({ length: n + 1 }, () =>
     new Array(weightSum + 1).fill(0)

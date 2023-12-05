@@ -13,7 +13,7 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <nav className="bg-gray-800 text-white p-4 relative" ref={menuRef}>
+      <nav className="w-full bg-gray-800 text-white p-4 relative" ref={menuRef}>
         <div className="container mx-auto flex items-center justify-between ">
           <Link href="/" className="text-xl font-bold">
             Algorithm Visualization
