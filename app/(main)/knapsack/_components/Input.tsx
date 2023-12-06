@@ -20,7 +20,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <input
       id={id}
-      className={`border outline-${outlineColor} border-${outlineColor}`}
+      className={`w-[80%] p-2 rounded-lg border outline-${outlineColor} border-${outlineColor}`}
       type="number"
       max={maxValue}
       value={value}

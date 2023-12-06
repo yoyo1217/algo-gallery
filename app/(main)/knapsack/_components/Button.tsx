@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`p-2 text-white rounded ${className}`}
+      className={`w-24 p-2 text-white rounded ${className}`}
       disabled={disabled}
     >
       {text}

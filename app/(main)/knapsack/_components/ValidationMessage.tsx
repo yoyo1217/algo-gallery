@@ -9,7 +9,9 @@ const ValidationMessage: React.FC<ValidationMessageProps> = ({
   isVisible,
   message,
 }) => (
-  <p className={`text-red-600 ${isVisible ? "" : "invisible"}`}>{message}</p>
+  <span className={`text-red-600 ${isVisible ? "" : "invisible"}`}>
+    {message}
+  </span>
 );
 
 export default ValidationMessage;

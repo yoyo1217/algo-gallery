@@ -8,6 +8,7 @@ import Table from "./_components/Table";
 import Input from "./_components/Input";
 import ValidationMessage from "./_components/ValidationMessage";
 import Button from "./_components/Button";
+import LeftHeaderTable from "./_components/LeftHeaderTable";
 
 const Knapsack = () => {
   const [weightLimit, setWeightLimit] = useState<number | "">(9);
@@ -83,8 +84,16 @@ const Knapsack = () => {
   ]);
 
   return (
-    <div className="h-full flex flex-col items-center justify-center space-y-4 m-3">
+    <div className="w-full flex flex-col items-center justify-center space-y-4">
       <h2 className="text-xl font-bold pt-4">DP Table</h2>
+      <ValidationMessage
+        isVisible={
+          !isValidNumber(weight) ||
+          !isValidNumber(value) ||
+          !isValidNumber(weightLimit)
+        }
+        message="Number must be between 1 and 99."
+      />
       <div className="flex flex-col space-y-3">
         <div className="flex items-center py-2 space-x-2">
           <Button
@@ -96,8 +105,10 @@ const Knapsack = () => {
             disabled={!isValidNumber(weight) || !isValidNumber(value)}
             text="Add Item"
           />
-          <div className="flex items-center space-x-2">
-            <label htmlFor="weight">Weight</label>
+          <div className="flex flex-col sm:flex-row items-center space-x-2">
+            <label className="py-2" htmlFor="weight">
+              Weight
+            </label>
             <Input
               id="weight"
               outlineColor={isValidNumber(weight) ? "green-600" : "red-600"}
@@ -115,10 +126,6 @@ const Knapsack = () => {
               maxValue={9999}
               onFocus={handleFocus}
             />
-            <ValidationMessage
-              isVisible={!isValidNumber(weight) || !isValidNumber(value)}
-              message="Number must be between 1 and 99."
-            />
           </div>
         </div>
         <div className="flex items-center space-x-4">
@@ -130,23 +137,30 @@ const Knapsack = () => {
             disabled={weights.length === 1}
             text="Remove Row"
           />
-          <label htmlFor="weightLimit">Weight Limit</label>
-          <Input
-            id="weightLimit"
-            outlineColor={isValidNumber(weightLimit) ? "green-600" : "red-600"}
-            value={weightLimit}
-            onChange={handleWeightLimitChange}
-            maxValue={9999}
-            onFocus={handleFocus}
-          />
+          <div className="sm:flex sm:flex-row">
+            <label htmlFor="weightLimit">Weight Limit</label>
+            <Input
+              id="weightLimit"
+              outlineColor={
+                isValidNumber(weightLimit) ? "green-600" : "red-600"
+              }
+              value={weightLimit}
+              onChange={handleWeightLimitChange}
+              maxValue={9999}
+              onFocus={handleFocus}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-row max-w-[90%] space-x-4">
-        <div className="min-w-[20%] max-h-[30rem] overflow-y-auto">
-          <Table headers={itemTableHeaders} data={twoDimensionalArray} />
+      <div className="flex flex-col max-w-[90%]  space-y-4">
+        <div className="min-w-[20%] md:min-w-[15%] max-h-[20rem] overflow-y-auto">
+          <LeftHeaderTable
+            headers={itemTableHeaders}
+            data={twoDimensionalArray}
+          />
         </div>
-        <div className="min-w-[20%] max-h-[30rem] overflow-auto">
+        <div className=" max-h-[20rem]  overflow-auto overflow-y-auto">
           <Table
             headers={dpTableHeaders}
             data={dpTableData}
@@ -155,13 +169,13 @@ const Knapsack = () => {
         </div>
       </div>
       {maximumWeight !== undefined ? (
-        <div className="text-lg font-bold">
+        <div className="text-md sm:text-lg font-bold">
           Maximum value: {maximumWeight} at weight limit: {weightLimit}
         </div>
       ) : (
         <div className="text-lg font-bold">not found</div>
       )}
-      <div className="py-4">
+      <div className="w-full py-4">
         <Editor />
       </div>
     </div>
