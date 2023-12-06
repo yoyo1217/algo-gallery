@@ -14,7 +14,7 @@ const Knapsack = () => {
   const [weightLimit, setWeightLimit] = useState<number | "">(9);
   const [weights, setWeights] = useState<number[]>([2, 1, 3, 2, 1, 5]);
   const [values, setValues] = useState<number[]>([3, 2, 6, 1, 3, 85]);
-  const [weight, setWeight] = useState<number | "">(5);
+  const [weight, setWeight] = useState<number | "">(6);
   const [value, setValue] = useState<number | "">(5);
   const numOfItem = weights.length;
 
