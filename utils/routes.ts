@@ -9,4 +9,9 @@ export const routes = [
     link: "/knapsack",
     imageUrl: "/knapsack.png",
   },
+  {
+    title: "Graph",
+    link: "/graph",
+    imageUrl: "/graph.png",
+  },
 ];
