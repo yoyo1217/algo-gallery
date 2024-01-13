@@ -14,4 +14,9 @@ export const routes = [
     link: "/graph",
     imageUrl: "/graph.png",
   },
+  {
+    title: "Game of Life",
+    link: "/game-of-life",
+    imageUrl: "/game-of-life.png",
+  },
 ];
