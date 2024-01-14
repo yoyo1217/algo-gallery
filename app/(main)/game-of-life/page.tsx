@@ -11,8 +11,6 @@ import {
   numRows,
 } from "./_utils";
 import Loading from "./_components/Loading";
-import { glinder, gliderGun } from "./pattern";
-import Link from "next/link";
 import Modal from "./_components/Modal";
 import Button from "./_components/Button";
 
@@ -45,7 +43,7 @@ const GameOfLife = ({ searchParams }: SearchParams) => {
   const [grid, setGrid] = useState(() => createRandomGrid());
   const [isLoading, setIsLoading] = useState(true);
   const [running, setRunning] = useState(false);
-  const show = searchParams?.show;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function cleanGrid() {
     setGrid(createEmptyGrid());
@@ -87,13 +85,16 @@ const GameOfLife = ({ searchParams }: SearchParams) => {
         />
         <Button label="Clean" onClick={cleanGrid} />
         <Button label="Random" onClick={drawRandomGrid} />
-        <Link
-          className="px-4 py-2 bg-blue-500 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          href="/game-of-life?show=true"
-        >
-          Life Lexicon List
-        </Link>
-        {show && <Modal drawLifeGrid={drawLifeGrid} />}
+        <Button
+          label="Life Lexicon List"
+          onClick={() => setIsModalOpen(true)}
+        />
+        {isModalOpen && (
+          <Modal
+            onClose={() => setIsModalOpen(false)}
+            drawLifeGrid={drawLifeGrid}
+          />
+        )}
       </div>
       <Grid grid={grid} setGrid={setGrid} />
     </div>
